@@ -1,0 +1,83 @@
+{% extends 'offerings/base_inner.html' %}
+{% load static %}
+
+{% block title %}Liquor Collection | Eiland Cigar Lounge{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style/css/liquor/liquor.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO SECTION ===== -->
+<section class="liquor-hero" style="background-image: url('{% static hero_image %}');">
+  <div class="liquor-hero-overlay">
+    <h1>Our Liquor Collection</h1>
+    <p>Explore our exclusive range of fine spirits and premium bottles</p>
+  </div>
+</section>
+
+<!-- ===== MAIN SECTION ===== -->
+<section class="liquor-section">
+  <div class="liquor-container">
+
+    <!-- Title + Search -->
+    <div class="liquor-header">
+      <h2>Our Collections</h2>
+      <input type="text" id="liquorSearch" placeholder="Search liquor..." onkeyup="filterLiquor()">
+    </div>
+
+    <!-- Category List -->
+    {% if collections %}
+      {% for category, items in collections.items %}
+      <div class="liquor-category">
+        <h3 class="category-title">{{ category }}</h3>
+
+        {% if items %}
+        <div class="liquor-list-header">
+          <span class="header-name">Name</span>
+          <span class="header-price">Price</span>
+        </div>
+
+        <ul class="liquor-list">
+          {% for item in items %}
+          <li class="liquor-item">
+            <span class="liquor-name">{{ item.name }}</span>
+            {% if item.price %}
+              <span class="liquor-price">${{ item.price|floatformat:2 }}</span>
+            {% else %}
+              <span class="liquor-price">—</span>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+          <p class="empty-category">No liquors listed under this category.</p>
+        {% endif %}
+      </div>
+      {% empty %}
+        <p class="no-categories">No liquor categories found.</p>
+      {% endfor %}
+    {% else %}
+      <p class="no-liquors">No liquors available at the moment. Please check back soon.</p>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterLiquor() {
+  const input = document.getElementById("liquorSearch");
+  const filter = input.value.toLowerCase();
+  const lists = document.querySelectorAll(".liquor-list li");
+
+  lists.forEach(item => {
+    const text = item.textContent || item.innerText;
+    item.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+  });
+}
+</script>
+{% endblock %}

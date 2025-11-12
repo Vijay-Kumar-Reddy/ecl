@@ -1,0 +1,175 @@
+/* =====================================================
+   EILAND BAR MENU PAGE (Unified Class Names)
+===================================================== */
+
+/* ===== HERO SECTION ===== */
+.bar-item-desc {
+  font-size: 0.95rem;
+  color: #bbb;
+  margin-top: 2px;
+  margin-left: 8px;
+}
+
+
+.bar-menu-hero {
+  position: relative;
+  height: 55vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.bar-menu-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.bar-menu-hero-overlay {
+  position: relative;
+  z-index: 2;
+}
+
+.bar-menu-hero-overlay h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: gold;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.bar-menu-hero-overlay p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  color: #ddd;
+}
+
+/* ===== MENU SECTION ===== */
+.bar-menu-section {
+  background-color: #0b0b0b;
+  padding: 80px 20px;
+}
+
+.bar-menu-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.bar-menu-column {
+  flex: 1;
+  min-width: 380px;
+  max-width: 480px;
+}
+
+.bar-menu-divider {
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, gold, transparent);
+  height: 100%;
+  opacity: 0.7;
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .bar-menu-divider {
+    display: block;
+  }
+}
+
+/* ===== CATEGORY STYLES ===== */
+.bar-menu-category {
+  margin-bottom: 50px;
+  border-bottom: 1px solid #222;
+  padding-bottom: 20px;
+}
+
+.bar-menu-heading {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  color: gold;
+  text-transform: uppercase;
+  border-bottom: 2px solid gold;
+  margin-bottom: 15px;
+  padding-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+/* ===== MENU ITEMS ===== */
+.bar-menu-item {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.05rem;
+  padding: 6px 0;
+  border-bottom: 1px dotted #444;
+  color: #f5f5f5;
+}
+
+.bar-menu-item:last-child {
+  border-bottom: none;
+}
+
+.bar-item-name {
+  flex: 1;
+}
+
+.bar-item-price {
+  min-width: 70px;
+  text-align: right;
+  color: gold;
+  font-weight: 500;
+}
+
+/* ===== EMPTY STATE ===== */
+.bar-empty-category,
+.bar-no-menu {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .bar-menu-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .bar-menu-column {
+    max-width: 600px;
+  }
+
+  .bar-menu-hero-overlay h1 {
+    font-size: 2.3rem;
+  }
+
+  .bar-menu-hero-overlay p {
+    font-size: 1rem;
+  }
+
+  .bar-menu-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .bar-menu-heading {
+    font-size: 1.4rem;
+  }
+
+  .bar-menu-item {
+    font-size: 0.95rem;
+  }
+}

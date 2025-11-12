@@ -1,0 +1,54 @@
+{% block hero_banner %}
+<section class="hero-slider" data-duration="{{ slide_duration }}">
+  <div class="hero-slider-inner">
+    <div class="hero-slides">
+      {% for banner in banners %}
+      <div class="hero-slide{% if forloop.first %} is-active{% endif %}">
+
+        <div class="hero-image">
+          <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+        </div>
+
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          {% if banner.badge %}
+          <span class="hero-badge">{{ banner.badge }}</span>
+          {% endif %}
+          <h1 class="hero-title">{{ banner.title }}</h1>
+          {% if banner.subtitle %}
+          <p class="hero-subtitle">{{ banner.subtitle }}</p>
+          {% endif %}
+          {% if banner.tagline %}
+          <p class="hero-tagline">{{ banner.tagline }}</p>
+          {% endif %}
+          {% if banner.button_text %}
+          <a href="{{ banner.button_link }}" class="hero-btn">{{ banner.button_text }}</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <div class="hero-arrows">
+      <div class="hero-arrow hero-prev">
+        <svg width="14" height="26" viewBox="0 0 14 26">
+          <path d="M13,26c-0.26,0-0.51-0.1-0.71-0.29l-12-12a1,1,0,0,1,0-1.42l12-12a1,1,0,0,1,1.42,1.42L2.41,13l11.3,11.29A1,1,0,0,1,13,26Z"/>
+        </svg>
+      </div>
+      <div class="hero-arrow hero-next">
+        <svg width="14" height="26" viewBox="0 0 14 26">
+          <path d="M1,0a1,1,0,0,1,.71.29l12,12a1,1,0,0,1,0,1.42l-12,12a1,1,0,1,1-1.42-1.42L11.59,13,0.29,1.71A1,1,0,0,1,1,0Z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Pagination dots -->
+    <div class="hero-pagination">
+      {% for banner in banners %}
+      <div class="hero-dot{% if forloop.first %} is-active{% endif %}"></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

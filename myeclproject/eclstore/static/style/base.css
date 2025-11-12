@@ -1,0 +1,15 @@
+body{
+    margin:0%;
+    padding: 0%;
+    margin-top:0%;
+    padding-top:0%;
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    
+}
+.container-nav{
+    height: auto;
+    background-color: #182033;
+    box-shadow: 0 2px 4px rgba(245, 236, 236, 0.692);
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+

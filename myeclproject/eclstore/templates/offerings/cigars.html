@@ -1,0 +1,133 @@
+{% extends 'offerings/base_inner.html' %}
+{% load static %}
+
+{% block title %}Our Cigar Collections | Eiland Cigar Lounge{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style/css/cigar/cigar.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO SECTION ===== -->
+<section class="cigar-hero" style="background-image: url('{{ hero_image }}');">
+  <div class="hero-overlay">
+    <h1>Our Cigar Collections</h1>
+    <p>Explore our handpicked premium cigars from around the world</p>
+  </div>
+</section>
+
+<!-- ===== MAIN SECTIONS SIDE BY SIDE ===== -->
+<section class="cigar-sections">
+
+  <!-- ===== OUR OFFERINGS SECTION ===== -->
+  {% if offers %}
+  <div class="cigar-offerings">
+    <div class="offerings-container">
+      <h2>Our Offers</h2>
+
+      {% for group in offers %}
+      <div class="offer-block">
+        <h3>{{ group.offer.title }} ({{ group.offer.discount_percent }}% OFF)</h3>
+
+        <div class="offer-header">
+          <span class="offer-name">Name</span>
+          <span class="offer-old">Old Price</span>
+          <span class="offer-new">Offer Price</span>
+        </div>
+
+        <ul id="offerList">
+          {% for cigar in group.cigars %}
+          <li class="offer-item">
+            <div class="offer-content">
+              <span class="offer-name">{{ cigar.name }}</span>
+              <span class="offer-old">
+                {% if cigar.old_price != "—" %}
+                  ${{ cigar.old_price|floatformat:2 }}
+                {% else %}
+                  —
+                {% endif %}
+              </span>
+              <span class="offer-new">
+                {% if cigar.offer_price != "—" %}
+                  ${{ cigar.offer_price|floatformat:2 }}
+                {% else %}
+                  —
+                {% endif %}
+              </span>
+            </div>
+          </li>
+          {% empty %}
+          <li class="offer-item empty">No cigars in this offer.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% empty %}
+      <p class="no-offers">No offers available at the moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ===== OUR COLLECTION SECTION ===== -->
+  <div class="cigar-list">
+    <div class="list-container">
+
+      <!-- Heading + Search Bar -->
+      <div class="collection-header">
+        <h2>Our Collection</h2>
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search cigars..."
+            onkeyup="filterCigars()"
+          >
+        </div>
+      </div>
+
+      <!-- Headings -->
+      <div class="list-header">
+        <span class="header-name">Name</span>
+        <span class="header-price">Price</span>
+      </div>
+
+      <!-- Cigar List -->
+      <ul id="cigarList">
+        {% for cigar in cigars %}
+        <li class="cigar-item">
+          <div class="cigar-content">
+            <span class="cigar-name">{{ cigar.name }}</span>
+            {% if cigar.price %}
+              <span class="cigar-price">${{ cigar.price|floatformat:2 }}</span>
+            {% else %}
+              <span class="cigar-price">—</span>
+            {% endif %}
+          </div>
+        </li>
+        {% empty %}
+        <li class="cigar-item empty">No cigars available at the moment.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterCigars() {
+  const input = document.getElementById("searchInput");
+  const filter = input.value.toLowerCase();
+  const list = document.getElementById("cigarList");
+  const items = list.getElementsByTagName("li");
+
+  for (let i = 0; i < items.length; i++) {
+    const text = items[i].textContent || items[i].innerText;
+    items[i].style.display = text.toLowerCase().includes(filter) ? "" : "none";
+  }
+}
+</script>
+{% endblock %}

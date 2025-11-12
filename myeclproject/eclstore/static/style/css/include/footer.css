@@ -1,0 +1,71 @@
+.footer {
+  background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+  color: #ccc;
+  padding: 60px 20px 30px;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-col h4 {
+  color: gold;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.footer-logo {
+  color: gold;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-col ul li {
+  margin: 8px 0;
+}
+
+.footer-col ul li a {
+  text-decoration: none;
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+  color: gold;
+}
+
+.social {
+  margin: 10px 0;
+}
+
+.social a {
+  font-size: 1.5rem;
+  color: #aaa;
+  margin-right: 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social a:hover {
+  color: gold;
+}
+
+.footer-bottom {
+  border-top: 1px solid #333;
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  color: #888;
+  font-size: 0.9rem;
+}

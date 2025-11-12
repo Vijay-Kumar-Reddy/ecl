@@ -1,0 +1,90 @@
+{% extends 'offerings/base_inner.html' %}
+{% load static %}
+
+{% block title %}Events | Eiland Cigar Lounge{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style/css/events/event_page.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO SECTION ===== -->
+<section class="event-hero" style="background-image: url('{% static hero_image %}');">
+  <div class="event-hero-overlay">
+    <h1>Events & Experiences</h1>
+    <p>Discover our signature gatherings and memorable evenings</p>
+  </div>
+</section>
+
+<!-- ===== UPCOMING EVENTS ===== -->
+<section class="event-section">
+  <div class="event-container">
+    <h2 class="event-heading">Upcoming Events</h2>
+
+    {% if upcoming_events %}
+      <div class="event-grid">
+        {% for event in upcoming_events %}
+        <div class="event-card">
+          {% if event.image %}
+          <div class="event-image">
+            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+          </div>
+          {% endif %}
+          <div class="event-details">
+            <h3>{{ event.title }}</h3>
+            {% if event.subtitle %}
+            <p class="event-subtitle">{{ event.subtitle }}</p>
+            {% endif %}
+            <p class="event-date"><strong>Date:</strong> {{ event.date }}</p>
+            {% if event.time %}
+            <p class="event-time"><strong>Time:</strong> {{ event.time }}</p>
+            {% endif %}
+            <p class="event-location"><strong>Location:</strong> {{ event.location }}</p>
+            <p class="event-desc">{{ event.description }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="no-events">No upcoming events at the moment.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ===== PAST EVENTS ===== -->
+<section class="event-section past">
+  <div class="event-container">
+    <h2 class="event-heading">Past Events</h2>
+
+    {% if past_events %}
+      <div class="event-grid">
+        {% for event in past_events %}
+        <div class="event-card">
+          {% if event.image %}
+          <div class="event-image">
+            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+          </div>
+          {% endif %}
+          <div class="event-details">
+            <h3>{{ event.title }}</h3>
+            {% if event.subtitle %}
+            <p class="event-subtitle">{{ event.subtitle }}</p>
+            {% endif %}
+            <p class="event-date"><strong>Date:</strong> {{ event.date }}</p>
+            {% if event.time %}
+            <p class="event-time"><strong>Time:</strong> {{ event.time }}</p>
+            {% endif %}
+            <p class="event-location"><strong>Location:</strong> {{ event.location }}</p>
+            <p class="event-desc">{{ event.description }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="no-events">No past events to show.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

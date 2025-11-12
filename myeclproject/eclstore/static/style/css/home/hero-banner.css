@@ -1,0 +1,254 @@
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+  background: #000;
+  touch-action: pan-y;
+}
+
+/* Slide container */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 1;
+}
+
+.hero-slide.is-active {
+  display: block;
+  z-index: 2;
+}
+
+/* Image */
+.hero-image,
+.hero-image img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
+
+/* Content */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+  width: 90%;
+  max-width: 800px;
+  padding: 1rem;
+}
+
+.hero-badge {
+  background: linear-gradient(45deg, #daa520, #ffd700);
+  color: #000;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  display: inline-block;
+  font-size: 0.9rem;
+}
+
+.hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  margin: 1.2rem 0;
+  color: #fff;
+}
+
+.hero-subtitle {
+  color: #ddd;
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.hero-tagline {
+  color: gold;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-btn {
+  display: inline-block;
+  background: gold;
+  color: #000;
+  font-weight: bold;
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s;
+  font-size: 1rem;
+}
+
+.hero-btn:hover {
+  background: #e0c000;
+  transform: translateY(-2px);
+}
+
+/* Arrows */
+.hero-arrows .hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 15px;
+  cursor: pointer;
+  z-index: 5;
+  transition: opacity 0.3s;
+}
+
+.hero-arrows .hero-arrow:hover {
+  opacity: 0.8;
+}
+
+.hero-prev { left: 25px; }
+.hero-next { right: 25px; }
+
+.hero-arrows svg {
+  fill: #fff;
+  transition: transform 0.2s;
+  width: 18px;
+  height: 30px;
+}
+.hero-prev:hover svg { transform: translateX(-6px); }
+.hero-next:hover svg { transform: translateX(6px); }
+
+/* Pagination Dots */
+.hero-pagination {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.hero-dot.is-active,
+.hero-dot:hover { background: gold; }
+
+/* -------------------------------------------------------------------
+   RESPONSIVE STYLES
+------------------------------------------------------------------- */
+
+/* Medium devices (tablets, small laptops) */
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+  }
+
+  .hero-btn {
+    font-size: 0.95rem;
+    padding: 0.7rem 1.5rem;
+  }
+}
+
+/* Small devices (landscape phones, tablets) */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .hero-tagline {
+    font-size: 0.95rem;
+  }
+
+  .hero-badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .hero-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .hero-arrows svg {
+    width: 14px;
+    height: 24px;
+  }
+
+  .hero-prev { left: 10px; }
+  .hero-next { right: 10px; }
+
+  .hero-pagination {
+    bottom: 18px;
+  }
+}
+
+/* Extra small devices (portrait phones) */
+@media (max-width: 480px) {
+  .hero-slider {
+    height: 90vh;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .hero-tagline {
+    font-size: 0.85rem;
+  }
+
+  .hero-badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.8rem;
+  }
+
+  .hero-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+  }
+
+  .hero-arrows svg {
+    width: 12px;
+    height: 20px;
+  }
+
+  .hero-prev, .hero-next {
+    padding: 10px;
+  }
+}

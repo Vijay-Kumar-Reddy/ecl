@@ -1,0 +1,90 @@
+{% extends 'offerings/base_inner.html' %}
+{% load static %}
+
+{% block title %}Bar Menu | Eiland Cigar Lounge{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style/css/bar_cocktail/bar_menu.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO SECTION ===== -->
+<section class="bar-menu-hero" style="background-image: url('{% static "images/bar.png" %}');">
+  <div class="bar-menu-hero-overlay">
+    <h1>The Bar Menu</h1>
+    <p>Premium Spirits • Signature Cocktails • Fine Wines</p>
+  </div>
+</section>
+
+<!-- ===== MENU SECTION ===== -->
+<section class="bar-menu-section">
+  <div class="bar-menu-wrapper">
+
+    <!-- LEFT COLUMN -->
+    <div class="bar-menu-column">
+      {% for category in left_categories %}
+      <div class="bar-menu-category">
+        <h2 class="bar-menu-heading">{{ category.name }}</h2>
+        {% if category.items.all %}
+          {% for item in category.items.all %}
+          <div class="bar-menu-item">
+            <div class="bar-item-text">
+              <span class="bar-item-name">{{ item.name }}</span>
+              {% if item.description %}
+              <p class="bar-item-desc">{{ item.description }}</p>
+              {% endif %}
+            </div>
+            {% if item.price %}
+            <span class="bar-item-price">${{ item.price|floatformat:2 }}</span>
+            {% endif %}
+          </div>
+          {% empty %}
+          <p class="bar-empty-category">No drinks in this section.</p>
+          {% endfor %}
+        {% else %}
+        <p class="bar-empty-category">No drinks available.</p>
+        {% endif %}
+      </div>
+      {% empty %}
+      <p class="bar-no-menu">No bar categories available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- GOLD DIVIDER -->
+    <div class="bar-menu-divider"></div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="bar-menu-column">
+      {% for category in right_categories %}
+      <div class="bar-menu-category">
+        <h2 class="bar-menu-heading">{{ category.name }}</h2>
+        {% if category.items.all %}
+          {% for item in category.items.all %}
+          <div class="bar-menu-item">
+            <div class="bar-item-text">
+              <span class="bar-item-name">{{ item.name }}</span>
+              {% if item.description %}
+              <p class="bar-item-desc">{{ item.description }}</p>
+              {% endif %}
+            </div>
+            {% if item.price %}
+            <span class="bar-item-price">${{ item.price|floatformat:2 }}</span>
+            {% endif %}
+          </div>
+          {% empty %}
+          <p class="bar-empty-category">No drinks in this section.</p>
+          {% endfor %}
+        {% else %}
+        <p class="bar-empty-category">No drinks available.</p>
+        {% endif %}
+      </div>
+      {% empty %}
+      <p class="bar-no-menu">No bar categories available.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

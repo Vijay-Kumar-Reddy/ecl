@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Eliand Cigar Lounge{% endblock %}</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="{% static 'style/base.css' %}">
+  <link rel="stylesheet" href="{% static 'style/css/include/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'style/css/include/footer.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+  {% include 'includes/navbar.html' %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'includes/footer.html' %}
+  <script src="{% static 'js/navbar.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{% extends 'offerings/base_inner.html' %}
+{% load static %}
+
+{% block title %}Bar & Cocktails | Eiland Cigar Lounge{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style/css/bar_cocktail/bar_cocktail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO SECTION ===== -->
+{% comment %} <section class="barcocktail-hero" style="background-image: url('{% static hero_image %}');"> {% endcomment %}
+<section class="barcocktail-hero" style="background-image: url('{% static hero_image %}'); background-size: cover; background-position: center;">
+
+  <div class="barcocktail-hero-overlay">
+    <h1>Bar & Cocktails</h1>
+    <p>Fine Spirits & Crafted Blends — Curated to Perfection</p>
+  </div>
+</section>
+
+<!-- ===== MAIN SECTION ===== -->
+<section class="barcocktail-section">
+  <div class="barcocktail-container">
+
+    <!-- === BAR COLUMN === -->
+    <div class="bar-menu">
+      <div class="bar-header">
+        <h2>Bar Items</h2>
+        <input type="text" id="barSearch" placeholder="Search drinks..." onkeyup="filterItems('barSearch','barItems')">
+      </div>
+
+      <div class="bar-header-row">
+        <span class="header-name">Name</span>
+        <span class="header-price">Price</span>
+      </div>
+
+      <ul id="barItems">
+        {% for drink in drinks %}
+        <li class="bar-item">
+          <span class="item-name">{{ drink.name }}</span>
+          {% if drink.price %}
+            <span class="item-price">${{ drink.price|floatformat:2 }}</span>
+          {% else %}
+            <span class="item-price">—</span>
+          {% endif %}
+        </li>
+        {% empty %}
+        <li class="bar-item empty">No drinks available right now.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- === COCKTAIL COLUMN === -->
+    <div class="cocktail-menu">
+      <div class="cocktail-header">
+        <h2>Cocktails</h2>
+        <input type="text" id="cocktailSearch" placeholder="Search cocktails..." onkeyup="filterItems('cocktailSearch','cocktailItems')">
+      </div>
+
+      <div class="cocktail-header-row">
+        <span class="header-name">Name</span>
+        <span class="header-price">Price</span>
+      </div>
+
+      <ul id="cocktailItems">
+        {% for cocktail in cocktails %}
+        <li class="cocktail-item">
+          <span class="item-name">{{ cocktail.name }}</span>
+          {% if cocktail.price %}
+            <span class="item-price">${{ cocktail.price|floatformat:2 }}</span>
+          {% else %}
+            <span class="item-price">—</span>
+          {% endif %}
+        </li>
+        {% empty %}
+        <li class="cocktail-item empty">No cocktails available right now.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterItems(inputId, listId) {
+  const input = document.getElementById(inputId);
+  const filter = input.value.toLowerCase();
+  const list = document.getElementById(listId);
+  const items = list.getElementsByTagName("li");
+
+  for (let i = 0; i < items.length; i++) {
+    const text = items[i].textContent || items[i].innerText;
+    items[i].style.display = text.toLowerCase().includes(filter) ? "" : "none";
+  }
+}
+</script>
+{% endblock %}

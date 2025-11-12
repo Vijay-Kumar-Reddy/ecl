@@ -1,0 +1,213 @@
+/* ===== BASE STYLE ===== */
+body {
+  background: #0b0b0b;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ===== HERO SECTION ===== */
+.liquor-hero {
+  position: relative;
+  height: 55vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.liquor-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.liquor-hero-overlay {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  padding: 0 20px;
+}
+
+.liquor-hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: gold;
+  margin-bottom: 0.5rem;
+}
+
+.liquor-hero p {
+  color: #ddd;
+  font-size: 1.2rem;
+}
+
+/* ===== MAIN SECTION ===== */
+.liquor-section {
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.liquor-container {
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* ===== HEADER ===== */
+.liquor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+  gap: 10px;
+  text-align: center;
+}
+
+.liquor-header h2 {
+  font-size: 2.2rem;
+  color: gold;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  text-align: left;
+}
+
+.liquor-header input {
+  flex: 1;
+  max-width: 300px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #1a1a1a;
+  color: #f5f5f5;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+}
+
+.liquor-header input:focus {
+  border-color: gold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* ===== CATEGORY SECTION ===== */
+.liquor-category {
+  background: #111;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 60px;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.08);
+  transition: 0.3s;
+}
+
+.liquor-category:hover {
+  transform: scale(1.01);
+}
+
+.category-title {
+  color: gold;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-bottom: 2px solid gold;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+/* ===== LIST HEADERS ===== */
+.liquor-list-header {
+  display: flex;
+  justify-content: space-between;
+  background: #1a1a1a;
+  border-bottom: 2px solid gold;
+  padding: 12px 20px;
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  color: gold;
+  margin-bottom: 10px;
+}
+
+/* ===== ITEMS ===== */
+.liquor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a1a;
+  padding: 14px 20px;
+  margin-bottom: 8px;
+  border-left: 4px solid gold;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.liquor-item:hover {
+  background: #222;
+  transform: translateX(4px);
+}
+
+.liquor-name {
+  color: #f5f5f5;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.liquor-price {
+  color: gold;
+  font-weight: 600;
+  width: 80px;
+  text-align: right;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 992px) {
+  .liquor-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .liquor-header h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .liquor-header input {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .liquor-container {
+    padding: 0;
+  }
+
+  .liquor-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .liquor-price {
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .liquor-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .liquor-hero p {
+    font-size: 1rem;
+  }
+
+  .category-title {
+    font-size: 1.3rem;
+  }
+}

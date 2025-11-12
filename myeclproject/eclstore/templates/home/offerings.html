@@ -1,0 +1,38 @@
+{% block offerings %}
+
+<section id="offerings" class="offer-section">
+  <div class="offer-container">
+    <div class="offer-header">
+      <h2 class="section-title">Our Premium Offerings</h2>
+      <p class="section-subtitle">Experience the finest in liquor, cocktails, and cigars</p>
+    </div>
+
+    <div class="cards">
+      {% for item in offerings %}
+      <div class="card {{ item.category }}">
+        <img src="{{ item.image }}" alt="{{ item.name }}" class="card-img">
+        <div class="card-body">
+          <h3 class="card-title">{{ item.name }}</h3> 
+          <p class="card-text">{{ item.description }}</p>
+          {% comment %} <button class="explore-btn">Explore All</button> {% endcomment %}
+          {% if item.category == "Cigar" %}
+            <a href="{% url 'cigars' %}" class="explore-btn">Explore All</a>
+          {% elif item.category == "bar" %}
+            <a href="{% url 'bar_and_cocktail' %}" class="explore-btn">Explore All</a>
+          {% elif item.category == "liquor" %}
+            <a href="{% url 'liquor' %}" class="explore-btn">Explore All</a>
+          {% else %}
+            <a href="#" class="explore-btn">Explore All</a>
+          {% endif %}
+
+        </div>
+      </div>
+      {% empty %}
+      <p class="no-items">No offerings available at the moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

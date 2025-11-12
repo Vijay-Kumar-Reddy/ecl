@@ -1,0 +1,135 @@
+.gallery-section {
+  background: #111;
+  color: #ddd;
+  padding: 100px 20px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.gallery-title {
+  color: gold;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-subtitle {
+  color: #aaa;
+  margin-bottom: 2.5rem;
+}
+
+.gallery-wrapper {
+  position: relative;
+  overflow: hidden;
+  max-width: 900px;
+  height: 420px;
+  margin: 0 auto;
+}
+
+.gallery-track {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  height: 100%;
+  transition: transform 1s ease;
+}
+
+.gallery-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  transition: all 1s ease-in-out;
+  width: 550px;
+  height: 320px;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #333;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.caption {
+  margin-top: 0.6rem;
+}
+
+.caption h4 {
+  color: gold;
+  font-size: 1rem;
+}
+
+.caption p {
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+/* Active / Center */
+.gallery-item.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 3;
+}
+
+/* Next / Prev (side images) */
+.gallery-item.prev {
+  opacity: 0.5;
+  transform: translate(calc(-50% - 260px), -50%) scale(0.8);
+  z-index: 2;
+}
+
+.gallery-item.next {
+  opacity: 0.5;
+  transform: translate(calc(-50% + 260px), -50%) scale(0.8);
+  z-index: 2;
+}
+
+/* Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  color: gold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s, color 0.3s;
+  z-index: 4;
+}
+
+.arrow:hover {
+  color: #ffd700;
+  transform: translateY(-50%) scale(1.2);
+}
+
+.arrow.prev {
+  left: 10px;
+}
+
+.arrow.next {
+  right: 10px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .gallery-item {
+    width: 420px;
+    height: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-section {
+    padding: 70px 15px;
+  }
+  .gallery-item {
+    width: 300px;
+    height: 200px;
+  }
+}

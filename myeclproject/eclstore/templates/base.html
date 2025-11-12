@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Eliand Cigar Lounge{% endblock %}</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="{% static 'style/base.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/include/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/include/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/home/hero-banner.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/home/offerings.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/home/about.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/home/gallery.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/home/contact.css' %}">
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    {% block extra_css %}{% endblock %}
+
+     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ✅ Adjust offset for fixed header */
+        :target {
+            scroll-margin-top: 40px; /* match your navbar height */
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'includes/navbar.html' %}
+
+    <main>
+        {% if messages %}
+        <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+        {% endif %}
+
+        {% include 'home/hero-banner.html' %}
+        {% include 'home/offerings.html' %}
+        {% include 'home/about.html' %}
+        {% include 'home/gallery.html' %}
+        {% include 'home/contact.html' %}
+    </main>
+    {% include 'includes/footer.html' %}
+
+    <script src="{% static 'js/hero-banner.js' %}"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/gallery.js' %}"></script>
+    
+</body>
+</html>

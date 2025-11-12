@@ -1,0 +1,29 @@
+{% load static %}
+{% block navbar %}
+<nav class="navbar">
+  <div class="nav-container">
+
+    <!-- ✅ Logo with image and text -->
+    <div class="nav-logo">
+      <img src="{% static 'images/logo.png' %}" alt="Eiland Lounge Logo" class="nav-logo-img">
+      Eiland Lounge
+    </div>
+
+    <!-- Hamburger icon -->
+    <div class="nav-toggle" id="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Navigation links -->
+    <ul class="nav-links" id="nav-links"> 
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'bar_menu'%}">Menu</a></li>
+      <li><a href="{% url 'event_page'%}">Events</a></li>
+      <li><a href="{% url 'index' %}#gallery">Gallery</a></li>
+      <li><a href="{% url 'index' %}#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+{% endblock %}

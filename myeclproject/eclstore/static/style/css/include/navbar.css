@@ -1,0 +1,164 @@
+/* =========================
+   NAVIGATION BAR
+========================= */
+
+
+.navbar {
+  background-color: #000;
+  border-bottom: 1px solid #b8860b;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Container */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
+}
+
+/* Logo */
+.nav-logo {
+  color: gold;
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: "Poppins", Arial, sans-serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.nav-logo-img {
+  height: 40px;        /* Adjust size here */
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+  object-fit: contain;
+}
+
+/* Nav Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: #ddd;
+  text-decoration: none;
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: gold;
+}
+
+/* Hamburger Menu (hidden on desktop) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  width: 28px;
+  height: 22px;
+  gap: 5px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: gold;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+
+
+/* =========================
+   RESPONSIVE STYLES
+========================= */
+
+/* Tablets & smaller laptops */
+@media (max-width: 1024px) {
+  .nav-container {
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-logo {
+    font-size: 1.6rem;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    background-color: #000;
+    border-top: 1px solid #b8860b;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.5rem 0;
+    display: none;
+  }
+
+  .nav-links.show {
+    display: flex;
+    animation: fadeInNav 0.3s ease;
+  }
+
+  @keyframes fadeInNav {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav-links a {
+    font-size: 1.1rem;
+  }
+
+  /* Hamburger animation when active */
+  .nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(8px);
+  }
+  .nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-8px);
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0.8rem 1rem;
+  }
+
+  .nav-logo {
+    font-size: 1.4rem;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+  }
+}
