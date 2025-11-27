@@ -26,13 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6r3(lf^7(a!0)wx%_&x@7j6z%g8+3q#ghozou+b1rn9u8^bpz$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    "ecl-production.up.railway.app",
-    "eilandcigarlounge.com",
-    "www.eilandcigarlounge.com",
-]
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost",
