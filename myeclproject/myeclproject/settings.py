@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-6r3(lf^7(a!0)wx%_&x@7j6z%g8+3q#ghozou+b1rn9u8^bpz$
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://localhost','https://ecl-production.up.railway.app/', 'https://eilandcigarlounge.com/']
+CSRF_TRUSTED_ORIGINS = ['http://localhost','https://ecl-production.up.railway.app', 'https://eilandcigarlounge.com/']
 
 
 # Application definition
