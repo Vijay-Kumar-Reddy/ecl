@@ -5,9 +5,22 @@
       {% for banner in banners %}
       <div class="hero-slide{% if forloop.first %} is-active{% endif %}">
 
+        {% comment %} <div class="hero-image">
+          <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+        </div> {% endcomment %}
+
+        {% if banner.video %}
+        <div class="hero-video">
+          <video autoplay muted playsinline loop>
+              <source src="{{ banner.video.url }}" type="video/mp4">
+          </video>
+        </div>
+        {% elif banner.image %}
         <div class="hero-image">
           <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
         </div>
+        {% endif %}
+
 
         <div class="hero-overlay"></div>
         <div class="hero-content">

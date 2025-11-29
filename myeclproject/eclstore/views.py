@@ -34,36 +34,13 @@ def index(request):
     #--------------------------------------
     
     #Gallery section
-    gallery_images = [
-        {
-            "url": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800",
-            "alt": "Luxury Bar Interior"
-        },
-        {
-            "url": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=800",
-            "alt": "Whiskey Bottle Close-up"
-        },
-        {
-            "url": "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=800",
-            "alt": "Cigar Lounge"
-        },
-        {
-            "url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800",
-            "alt": "Cigars Display"
-        },
-        {
-            "url": "https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=800",
-            "alt": "Champagne Glasses"
-        },
-        {
-            "url": "https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=800",
-            "alt": "Premium Liquor Collection"
-        },
-    ]
+    gallery_images = GalleryImage.objects.filter(is_active=True).order_by("order")
+
+    
     
     return render(request, "base.html", {
         "banners": banners,
-        "slide_duration": 10000,  # milliseconds
+        # "slide_duration": 10000,  # milliseconds
         "offerings": offerings,
         "gallery_images": gallery_images,
     })
@@ -293,3 +270,31 @@ def event_page(request):
 #         "hero_image": "images/liquor.png",  # static/images/liquor_hero.jpg
 #         "collections": collections,
 #     })
+
+
+# gallery_images = [
+    #     {
+    #         "url": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800",
+    #         "alt": "Luxury Bar Interior"
+    #     },
+    #     {
+    #         "url": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=800",
+    #         "alt": "Whiskey Bottle Close-up"
+    #     },
+    #     {
+    #         "url": "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=800",
+    #         "alt": "Cigar Lounge"
+    #     },
+    #     {
+    #         "url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800",
+    #         "alt": "Cigars Display"
+    #     },
+    #     {
+    #         "url": "https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=800",
+    #         "alt": "Champagne Glasses"
+    #     },
+    #     {
+    #         "url": "https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=800",
+    #         "alt": "Premium Liquor Collection"
+    #     },
+    # ]

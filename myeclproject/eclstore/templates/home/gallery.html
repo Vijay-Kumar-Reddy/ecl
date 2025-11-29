@@ -1,47 +1,39 @@
 {% block gallery%}
-
 <section id="gallery" class="gallery-section">
   <div class="gallery-container">
     <h2 class="gallery-title">Our Gallery</h2>
     <p class="gallery-subtitle">A glimpse into the elegance of Eiland Cigar Lounge</p>
 
     <div class="gallery-wrapper">
-      <div class="gallery-track">
-        <div class="gallery-item active">
-          <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800" alt="">
-          <div class="caption">
-            <h4>Luxury Bar Interior</h4>
-            <p>Where class meets comfort</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=800" alt="">
-          <div class="caption">
-            <h4>Exclusive Whiskey Collection</h4>
-            <p>Rare blends from around the world</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=800" alt="">
-          <div class="caption">
-            <h4>Liquor Display</h4>
-            <p>A curated showcase of excellence</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=800" alt="">
-          <div class="caption">
-            <h4>Artisan Cocktails</h4>
-            <p>Crafted by expert mixologists</p>
-          </div>
-        </div>
-      </div>
 
-      <button class="arrow prev">&#10094;</button>
-      <button class="arrow next">&#10095;</button>
+      {% if gallery_images %}
+        <div class="gallery-track">
+            {% for img in gallery_images %}
+            <div class="gallery-item">
+                <img src="{{ img.image.url }}" alt="{{ img.title }}">
+                <div class="caption">
+                    <h4>{{ img.title }}</h4>
+                    <p>{{ img.caption }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if gallery_images|length > 1 %}
+        <button class="arrow prev">&#10094;</button>
+        <button class="arrow next">&#10095;</button>
+        {% endif %}
+
+      {% else %}
+        <p class="no-gallery" style="color: #aaa; margin-top: 30px;">
+          Gallery images will appear soon.
+        </p>
+      {% endif %}
+
     </div>
   </div>
 </section>
+
 
 
 {% endblock %}

@@ -31,9 +31,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost",
-    "https://ecl-production.up.railway.app/",
-    "https://eilandcigarlounge.com/",
+    "https://ecl-production.up.railway.app",
+    "https://www.eilandcigarlounge.com",
+    "https://eilandcigarlounge.com",
 ]
 
 

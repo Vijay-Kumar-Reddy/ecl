@@ -12,6 +12,7 @@ from .models import (
     BarCategory,
     BarItem,
     Event,
+    GalleryImage,
 )
 
 
@@ -88,4 +89,7 @@ class EventAdmin(admin.ModelAdmin):
     ordering = ["-date"]
 
 
-
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+    list_display = ("title", "order", "is_active")
+    list_editable = ("order", "is_active")
