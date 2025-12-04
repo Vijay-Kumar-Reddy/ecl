@@ -1,0 +1,78 @@
+{% extends 'offerings/base_inner.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} | Event Gallery{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style/css/events/event_gallery.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- =============================
+     HERO SECTION
+============================= -->
+<section class="event-gallery-hero">
+    <h1>{{ event.title }}</h1>
+</section>
+
+<div class="event-gallery-container">
+
+    {% if not videos and not images %}
+        <!-- NO CONTENT AVAILABLE -->
+        <p class="no-media">No media available for this event.</p>
+    {% endif %}
+
+    <!-- =============================
+         VIDEO SLIDER
+    ============================== -->
+    {% if videos %}
+    <h2 class="section-title">Event Videos</h2>
+
+    <div class="video-slider-container">
+
+        <button class="video-prev slider-arrow">❮</button>
+
+        <div class="video-slider">
+            {% for vid in videos %}
+            <div class="video-slide">
+                <video class="event-video" muted playsinline preload="metadata">
+                    <source src="{{ vid.video.url }}" type="video/mp4">
+                </video>
+
+                {% if vid.caption %}
+                <p class="video-caption">{{ vid.caption }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <button class="video-next slider-arrow">❯</button>
+    </div>
+    {% endif %}
+
+    <!-- =============================
+         IMAGE GRID
+    ============================== -->
+    {% if images %}
+    <h2 class="section-title">Event Images</h2>
+
+    <div class="image-grid">
+        {% for img in images %}
+        <div class="image-card">
+            <img src="{{ img.image.url }}" alt="{{ img.caption }}">
+            {% if img.caption %}
+            <p class="caption">{{ img.caption }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- JS -->
+<script src="{% static 'js/events/video_hover.js' %}"></script>
+<script src="{% static 'js/events/video_slider.js' %}"></script>
+
+{% endblock %}

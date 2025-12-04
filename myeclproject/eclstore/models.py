@@ -253,3 +253,23 @@ class GalleryImage(models.Model):
 
     def __str__(self):
         return self.title or "Gallery Image"
+
+
+class EventImage(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to="event_gallery/images/")
+    caption = models.CharField(max_length=255, blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Image for {self.event.title}"
+
+
+class EventVideo(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="videos")
+    video = models.FileField(upload_to="event_gallery/videos/")
+    caption = models.CharField(max_length=255, blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Video for {self.event.title}"

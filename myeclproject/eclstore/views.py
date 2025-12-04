@@ -154,6 +154,17 @@ def event_page(request):
     return render(request, "events/event_page.html", context)
 
 
+def event_gallery(request, event_id):
+    event = Event.objects.get(id=event_id, is_active=True)
+
+    images = event.images.order_by("order")
+    videos = event.videos.order_by("order")
+
+    return render(request, "events/event_gallery.html", {
+        "event": event,
+        "images": images,
+        "videos": videos
+    })
 
 
 #banner section

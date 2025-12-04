@@ -77,6 +77,9 @@
             {% endif %}
             <p class="event-location"><strong>Location:</strong> {{ event.location }}</p>
             <p class="event-desc">{{ event.description }}</p>
+            <a href="{% url 'event_gallery' event.id %}" class="event-card-link">
+              View Gallery
+            </a>
           </div>
         </div>
         {% endfor %}

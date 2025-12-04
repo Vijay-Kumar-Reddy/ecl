@@ -1,0 +1,143 @@
+/* ------------------------------------- */
+/*           GALLERY SECTION             */
+/* ------------------------------------- */
+
+.gallery-section {
+  background: #111;
+  color: #ddd;
+  padding: 100px 20px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.gallery-title {
+  color: gold;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-subtitle {
+  color: #aaa;
+  margin-bottom: 2.5rem;
+}
+
+.gallery-wrapper {
+  position: relative;
+  overflow: hidden;
+  max-width: 900px;
+  height: 420px;
+  margin: 0 auto;
+  border-radius: 12px;
+}
+
+/* ------------------------------------- */
+/*          NEW SLIDER TRACK             */
+/* ------------------------------------- */
+
+.gallery-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s ease-in-out;  /* Smooth sliding */
+}
+
+/* Each slide = full width of gallery area */
+.gallery-item {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ------------------------------------- */
+/*               IMAGE                   */
+/* ------------------------------------- */
+
+.gallery-item img {
+  width: 550px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #333;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  margin: 0 auto;
+}
+
+/* Caption */
+.caption {
+  margin-top: 0.6rem;
+}
+
+.caption h4 {
+  color: gold;
+  font-size: 1rem;
+}
+
+.caption p {
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------- */
+/*                ARROWS                 */
+/* ------------------------------------- */
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  color: gold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s, color 0.3s;
+  z-index: 10;
+}
+
+.arrow:hover {
+  color: #ffd700;
+  transform: translateY(-50%) scale(1.2);
+}
+
+.arrow.prev {
+  left: 10px;
+}
+
+.arrow.next {
+  right: 10px;
+}
+
+/* ------------------------------------- */
+/*          SINGLE IMAGE FIX             */
+/* ------------------------------------- */
+
+.gallery-track.single {
+  transform: none !important;
+}
+
+.arrow.single-hide {
+  display: none !important;
+}
+
+/* ------------------------------------- */
+/*              RESPONSIVE               */
+/* ------------------------------------- */
+
+@media (max-width: 992px) {
+  .gallery-item img {
+    width: 420px;
+    height: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-section {
+    padding: 70px 15px;
+  }
+  .gallery-item img {
+    width: 300px;
+    height: 200px;
+  }
+}

@@ -1,0 +1,107 @@
+.event-booking {
+  background-color: #0b0b0b;
+  color: #fff;
+  padding: 80px 20px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.booking-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #111;
+  padding: 40px;
+  border-radius: 10px;
+  border: 1px solid gold;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+.booking-container h1 {
+  color: gold;
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.booking-container p {
+  color: #ddd;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: gold;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #1a1a1a;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: gold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.submit-btn {
+  background-color: gold;
+  color: #000;
+  padding: 14px 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #e6c200;
+}
+
+.messages p {
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.messages .success {
+  background: #1a3d1a;
+  color: #9fff9f;
+}
+
+.messages .error {
+  background: #3d1a1a;
+  color: #ff9f9f;
+}
+
+@media (max-width: 600px) {
+  .booking-container {
+    padding: 30px 20px;
+  }
+
+  .booking-container h1 {
+    font-size: 1.8rem;
+  }
+}

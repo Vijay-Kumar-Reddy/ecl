@@ -1,0 +1,157 @@
+/* =============================
+   HERO TITLE
+============================= */
+
+.no-media {
+    color: #ccc;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 60px 0;
+    font-family: "Playfair Display", serif;
+    opacity: 0.8;
+}
+
+.event-gallery-hero {
+    text-align: center;
+    padding: 35px 20px 20px;
+    background: #000;
+}
+
+.event-gallery-hero h1 {
+    font-size: 2.4rem;
+    color: gold;
+    font-family: "Playfair Display", serif;
+}
+
+/* =============================
+   PAGE CONTAINER
+============================= */
+.event-gallery-container {
+    background: #222;
+    padding: 30px 0 60px;
+    font-family: "Poppins", sans-serif;
+}
+
+.section-title {
+    text-align: center;
+    color: gold;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    font-family: "Playfair Display", serif;
+}
+
+/* =============================
+   VIDEO SLIDER
+============================= */
+.video-slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 92%;
+    margin: 0 auto 50px;
+}
+
+.video-slider {
+    display: flex;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    width: 100%;
+}
+
+.video-slide {
+    min-width: 360px;
+    margin: 0 15px;
+    text-align: center;
+}
+
+.video-slide video {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #333;
+    background: #000;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.video-slide video:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+}
+
+/* CLEAN ARROWS — NO CIRCLE */
+.slider-arrow {
+    background: none;
+    border: none;
+    color: gold;
+    font-size: 2.5rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.slider-arrow:hover {
+    color: #ffd700;
+    transform: scale(1.15);
+}
+
+.slider-arrow:active {
+    transform: scale(1.05);
+}
+
+.video-prev {
+    margin-right: 12px;
+}
+
+.video-next {
+    margin-left: 12px;
+}
+
+/* =============================
+   IMAGE GRID
+============================= */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 25px;
+    padding: 0 20px;
+}
+
+.image-card img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    background: black;
+    border: 2px solid #333;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    transition: 0.3s;
+}
+
+.image-card img:hover {
+    transform: scale(1.03);
+}
+
+.caption {
+    text-align: center;
+    margin-top: 6px;
+    color: #ccc;
+}
+
+/* =============================
+   RESPONSIVE
+============================= */
+@media (max-width: 768px) {
+    .video-slide {
+        min-width: 260px;
+    }
+    .video-slide video {
+        height: 180px;
+    }
+
+    .slider-arrow {
+        font-size: 2rem;
+    }
+}
