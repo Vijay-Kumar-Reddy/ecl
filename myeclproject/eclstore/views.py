@@ -1,15 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import *
 from django.contrib import messages
-from django.shortcuts import redirect
+
+from .models import (
+    Banner, Cigar, CigarOffer, Drink, Liquor,
+    BarCategory, BarItem, Event, GalleryImage,
+    EventImage, EventVideo
+)
+
+
+# ============================================
+#                  HOME PAGE
+# ============================================
 
 def index(request):
-    
+
+    # Fetch ALL banners so the expiry checker runs
+    all_banners = Banner.objects.all()
+
+    # ⭐ Auto-expire expired banners
+    for banner in all_banners:
+        banner.auto_expire()
+
+    # Load only active banners (AFTER expiry processing)
     banners = Banner.objects.filter(is_active=True).order_by('order')
-    
-    #Offerings section
-    
+
+    # Offerings Section
     offerings = [
         {
             "name": "Premium Cigar Lounge",
@@ -30,29 +46,27 @@ def index(request):
             "image": "static/images/liquor.png",
         },
     ]
-    
-    #--------------------------------------
-    
-    #Gallery section
+
+    # Gallery Images
     gallery_images = GalleryImage.objects.filter(is_active=True).order_by("order")
 
-    
-    
     return render(request, "base.html", {
         "banners": banners,
-        # "slide_duration": 10000,  # milliseconds
         "offerings": offerings,
         "gallery_images": gallery_images,
     })
 
 
 
+# ============================================
+#             CIGAR COLLECTION
+# ============================================
 
 def cigar_collection(request):
     cigars = Cigar.objects.filter(is_active=True).order_by('order')
     offers = CigarOffer.objects.filter(is_active=True).order_by('order')
     hero_image = "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=1920"
-    
+
     offer_data = []
 
     for offer in offers:
@@ -67,63 +81,68 @@ def cigar_collection(request):
                 'offer_price': offer_price if offer_price else "—",
             })
 
-        # Only include if there’s at least one cigar
         if cigar_data:
             offer_data.append({
                 'offer': offer,
                 'cigars': cigar_data
             })
-        
+
     context = {
         'hero_image': hero_image,
         'cigars': cigars,
-        'offers': offer_data,  # ✅ Use structured offer data
+        'offers': offer_data,
     }
 
     return render(request, 'offerings/cigars.html', context)
 
 
-# Bar and Cocktail View
-# ------------------------------------------
+
+# ============================================
+#           BAR & COCKTAILS PAGE
+# ============================================
+
 def bar_and_cocktail(request):
-    # Background image (stored in /static/images/)
     hero_image = "images/bar.png"
 
-    # Separate drinks by category
     drinks = Drink.objects.filter(category="bar", is_active=True).order_by("order")
     cocktails = Drink.objects.filter(category="cocktail", is_active=True).order_by("order")
 
-    context = {
+    return render(request, "offerings/bar.html", {
         "hero_image": hero_image,
         "drinks": drinks,
         "cocktails": cocktails,
-    }
-    return render(request, "offerings/bar.html", context)
+    })
 
 
+
+# ============================================
+#              LIQUOR COLLECTION
+# ============================================
 
 def liquor_collection(request):
-    hero_image = "images/liquor.png"  # static/images/liquor_hero.jpg
+    hero_image = "images/liquor.png"
 
-    # Get liquors grouped by category
     collections = {}
     liquors = Liquor.objects.filter(is_active=True).order_by('order', 'name')
 
     for liquor in liquors:
         collections.setdefault(liquor.get_category_display(), []).append(liquor)
 
-    context = {
+    return render(request, "offerings/liquor.html", {
         "hero_image": hero_image,
         "collections": collections,
-    }
-    return render(request, "offerings/liquor.html", context)
+    })
 
+
+
+# ============================================
+#                 BAR MENU
+# ============================================
 
 def bar_menu(request):
     hero_image = "images/bar_hero.jpg"
     categories = BarCategory.objects.filter(is_active=True).prefetch_related("items").order_by("order")
 
-    # Split categories evenly into two columns
     category_list = list(categories)
     mid = len(category_list) // 2
     left_categories = category_list[:mid]
@@ -137,24 +156,32 @@ def bar_menu(request):
 
 
 
+# ============================================
+#                EVENT PAGE
+# ============================================
+
 def event_page(request):
-    # Hero banner (static image)
+
     hero_image = "images/event-nov.png"
 
-    # Fetch events dynamically
     events = Event.objects.filter(is_active=True)
     upcoming_events = [e for e in events if e.is_upcoming()]
     past_events = [e for e in events if not e.is_upcoming()]
 
-    context = {
+    return render(request, "events/event_page.html", {
         "hero_image": hero_image,
         "upcoming_events": upcoming_events,
         "past_events": past_events,
-    }
-    return render(request, "events/event_page.html", context)
+    })
 
+
+
+# ============================================
+#              EVENT GALLERY
+# ============================================
 
 def event_gallery(request, event_id):
+
     event = Event.objects.get(id=event_id, is_active=True)
 
     images = event.images.order_by("order")

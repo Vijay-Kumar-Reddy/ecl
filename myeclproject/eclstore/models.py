@@ -1,7 +1,12 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from datetime import timedelta
 
+
+# ============================
+#        BANNER MODEL
+# ============================
 
 class Banner(models.Model):
 
@@ -20,12 +25,13 @@ class Banner(models.Model):
 
     image = models.ImageField(upload_to="banners/", blank=True, null=True)
     video = models.FileField(upload_to="banners/videos/", blank=True, null=True)
-    
+
     badge = models.CharField(max_length=100, blank=True, null=True)
-    title = models.CharField(max_length=150,blank=True, null=True)
+    title = models.CharField(max_length=150, blank=True, null=True)
     subtitle = models.CharField(max_length=250, blank=True, null=True)
     tagline = models.CharField(max_length=250, blank=True, null=True)
     button_text = models.CharField(max_length=50, blank=True, null=True)
+
     button_link = models.CharField(
         max_length=100,
         choices=SECTION_CHOICES,
@@ -33,8 +39,18 @@ class Banner(models.Model):
         default='',
         help_text="Select which section this banner should link to."
     )
+
     order = models.PositiveIntegerField(default=0, help_text="Order of display on homepage")
     is_active = models.BooleanField(default=True)
+
+    # ⭐ NEW FIELDS: Duration system
+    display_duration_days = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        help_text="Show this banner for X days (leave empty for unlimited)."
+    )
+
+    start_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ['order']
@@ -42,19 +58,28 @@ class Banner(models.Model):
         verbose_name_plural = "Banners"
 
     def clean(self):
-        # Enforce only 1 input allowed
+        # Only 1 media allowed
         if self.image and self.video:
             raise ValidationError("Please upload either an IMAGE or a VIDEO — not both.")
 
         if not self.image and not self.video:
             raise ValidationError("Please upload at least one: IMAGE or VIDEO.")
-        
+
+    def auto_expire(self):
+        """Deactivate the banner automatically when its duration ends."""
+        if self.display_duration_days:
+            expiry = self.start_date + timedelta(days=self.display_duration_days)
+            if timezone.now() >= expiry and self.is_active:
+                self.is_active = False
+                self.save()
+
     def __str__(self):
-        return f"{self.title} ({'Active' if self.is_active else 'Inactive'})"
-
-        
+        return f"{self.title or 'Banner'} ({'Active' if self.is_active else 'Inactive'})"
 
 
+# ============================
+#           CIGARS
+# ============================
 
 class Cigar(models.Model):
     name = models.CharField(max_length=200)
@@ -63,74 +88,44 @@ class Cigar(models.Model):
     order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True, help_text="Uncheck to hide this cigar")
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['order']
 
+    def __str__(self):
+        return self.name
+
 
 class CigarOffer(models.Model):
-    title = models.CharField(max_length=200, help_text="Name or title of the offer")
+    title = models.CharField(max_length=200)
     cigars = models.ManyToManyField(Cigar, related_name='offer_list', blank=True)
-    discount_percent = models.DecimalField(max_digits=5, decimal_places=2, default=0.0,
-                                           help_text="Discount percentage (e.g., 10 for 10%)")
-    apply_to_all = models.BooleanField(default=False, help_text="If true, this offer applies to all cigars")
+    discount_percent = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    apply_to_all = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
         return self.title
 
-    class Meta:
-        ordering = ['order']
-
     def clean(self):
-        """Validation to prevent applying discounts to cigars with no price"""
         if self.discount_percent > 0:
-            # Check which cigars are affected by the offer
-            cigars_to_check = Cigar.objects.filter(is_active=True)
-            if not self.apply_to_all:
-                cigars_to_check = self.cigars.filter(is_active=True)
-
-            # Find cigars with missing prices
+            cigars_to_check = Cigar.objects.filter(is_active=True) if self.apply_to_all else self.cigars.filter(is_active=True)
             cigars_without_price = cigars_to_check.filter(price__isnull=True)
-
             if cigars_without_price.exists():
-                cigar_names = ", ".join([c.name for c in cigars_without_price])
-                raise ValidationError(
-                    f"The following cigars do not have a price set and cannot receive a discount: {cigar_names}"
-                )
+                names = ", ".join([c.name for c in cigars_without_price])
+                raise ValidationError(f"These cigars have no price: {names}")
 
     def get_discounted_price(self, cigar):
-        """Safely calculate discounted price only if cigar has a price."""
         if cigar.price:
             return round(cigar.price - (cigar.price * (self.discount_percent / 100)), 2)
         return None
 
 
-
-
-class Drink(models.Model):
-    CATEGORY_CHOICES = [
-        ('bar', 'Bar'),
-        ('cocktail', 'Cocktail'),
-    ]
-
-    name = models.CharField(max_length=200)
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='bar')
-    price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-    order = models.PositiveIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return f"{self.name} ({self.get_category_display()})"
-
-    class Meta:
-        ordering = ['category', 'order']
-
-
-from django.db import models
+# ============================
+#           DRINKS
+# ============================
 
 class Drink(models.Model):
     CATEGORY_CHOICES = [
@@ -142,7 +137,7 @@ class Drink(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
-    order = models.PositiveIntegerField(default=0, help_text="Controls the display order in the list.")
+    order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -154,6 +149,10 @@ class Drink(models.Model):
     def __str__(self):
         return f"{self.name} ({self.category})"
 
+
+# ============================
+#           LIQUORS
+# ============================
 
 class Liquor(models.Model):
     CATEGORY_CHOICES = [
@@ -181,12 +180,13 @@ class Liquor(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.category})"
-    
-    
 
+
+# ============================
+#       BAR CATEGORY + ITEMS
+# ============================
 
 class BarCategory(models.Model):
-    """Category for grouping bar menu items."""
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
@@ -201,10 +201,7 @@ class BarCategory(models.Model):
 
 
 class BarItem(models.Model):
-    """Individual item in the bar menu."""
-    category = models.ForeignKey(
-        BarCategory, on_delete=models.CASCADE, related_name="items"
-    )
+    category = models.ForeignKey(BarCategory, on_delete=models.CASCADE, related_name="items")
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
@@ -218,11 +215,11 @@ class BarItem(models.Model):
         return self.name
 
 
-
-
+# ============================
+#           EVENTS
+# ============================
 
 class Event(models.Model):
-    """Dynamic event model for upcoming and past events."""
     title = models.CharField(max_length=150)
     subtitle = models.CharField(max_length=200, blank=True, null=True)
     date = models.DateField()
@@ -231,7 +228,7 @@ class Event(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='events/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    order = models.PositiveIntegerField(default=0, help_text="Controls display order manually if needed.")
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['order', '-date']
@@ -240,9 +237,12 @@ class Event(models.Model):
         return f"{self.title} ({self.date})"
 
     def is_upcoming(self):
-        """True if event date is in the future."""
         return self.date >= timezone.now().date()
 
+
+# ============================
+#         GALLERY
+# ============================
 
 class GalleryImage(models.Model):
     image = models.ImageField(upload_to="gallery/")
@@ -254,6 +254,10 @@ class GalleryImage(models.Model):
     def __str__(self):
         return self.title or "Gallery Image"
 
+
+# ============================
+#      EVENT IMAGES & VIDEOS
+# ============================
 
 class EventImage(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="images")

@@ -1,4 +1,11 @@
 from django.contrib import admin
+from django.utils.html import format_html
+from django.utils import timezone
+from django.urls import path
+from django.shortcuts import render, redirect
+from django.contrib import messages
+import pandas as pd
+
 from .models import (
     Banner,
     Cigar,
@@ -13,29 +20,119 @@ from .models import (
     EventVideo,
 )
 
+
 # ======================================================
-#  MODEL ADMINS
+#                 BANNER ADMIN
 # ======================================================
 
-# ---------- BANNER ----------
 @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
-    list_display = ["title", "order", "is_active", "button_link"]
+
+    list_display = [
+        "title",
+        "order",
+        "expiry_date",
+        "status_colored",
+    ]
+
     list_filter = ["is_active"]
-    ordering = ["order"]
     search_fields = ["title", "subtitle"]
+    ordering = ["order"]
+
+    def status_colored(self, obj):
+        color = "green" if obj.is_active else "red"
+        text = "ACTIVE" if obj.is_active else "EXPIRED"
+        return format_html(f"<b style='color:{color}'>{text}</b>")
+
+    status_colored.short_description = "Status"
+
+    def expiry_date(self, obj):
+        if not obj.display_duration_days:
+            return "— Unlimited —"
+        return obj.start_date + timezone.timedelta(days=obj.display_duration_days)
+
+    expiry_date.short_description = "Expires On"
 
 
-# ---------- CIGAR ----------
+# ======================================================
+#                     CIGAR ADMIN (WITH EXCEL UPLOAD)
+# ======================================================
+
 @admin.register(Cigar)
 class CigarAdmin(admin.ModelAdmin):
+
+    change_list_template = "admin/cigar_change_list.html"
+
     list_display = ("name", "origin", "price", "order", "is_active")
     list_editable = ("price", "order", "is_active")
     search_fields = ("name", "origin")
     ordering = ("order",)
 
+    # Add custom URL for Excel upload
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path("upload-excel/", self.upload_excel, name="cigar_upload_excel"),
+        ]
+        return custom_urls + urls
 
-# ---------- CIGAR OFFERS ----------
+    # Excel Upload Handler
+    def upload_excel(self, request):
+        if request.method == "POST":
+            excel_file = request.FILES.get("excel_file")
+
+            if not excel_file:
+                messages.error(request, "Please upload a valid Excel file.")
+                return redirect("admin:cigar_upload_excel")
+
+            try:
+                df = pd.read_excel(excel_file)
+                df.columns = df.columns.str.lower()
+
+                created_count = 0
+                updated_count = 0
+                skipped_count = 0
+
+                for _, row in df.iterrows():
+                    name = str(row.get("name", "")).strip()
+                    price = row.get("price", None)
+
+                    if not name:
+                        continue
+
+                    cigar, created = Cigar.objects.get_or_create(name=name)
+
+                    if created:
+                        created_count += 1
+                        if pd.notna(price):
+                            cigar.price = price
+                        cigar.save()
+
+                    else:
+                        if pd.notna(price):
+                            cigar.price = price
+                            cigar.save()
+                            updated_count += 1
+                        else:
+                            skipped_count += 1
+
+                messages.success(
+                    request,
+                    f"Upload Complete! Created: {created_count}, Updated: {updated_count}, Skipped: {skipped_count}"
+                )
+                return redirect("admin:eclstore_cigar_changelist")
+
+            except Exception as e:
+                messages.error(request, f"Error reading file: {e}")
+                return redirect("admin:cigar_upload_excel")
+
+        return render(request, "admin/cigar_upload.html")
+
+
+# ======================================================
+#                     CIGAR OFFERS
+# ======================================================
+
 @admin.register(CigarOffer)
 class CigarOfferAdmin(admin.ModelAdmin):
     list_display = ("title", "discount_percent", "apply_to_all", "is_active", "order")
@@ -44,7 +141,10 @@ class CigarOfferAdmin(admin.ModelAdmin):
     ordering = ("order",)
 
 
-# ---------- DRINKS ----------
+# ======================================================
+#                     DRINKS
+# ======================================================
+
 @admin.register(Drink)
 class DrinkAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "price", "order", "is_active")
@@ -53,7 +153,10 @@ class DrinkAdmin(admin.ModelAdmin):
     ordering = ("order",)
 
 
-# ---------- LIQUOR ----------
+# ======================================================
+#                     LIQUOR
+# ======================================================
+
 @admin.register(Liquor)
 class LiquorAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "price", "order", "is_active")
@@ -62,7 +165,10 @@ class LiquorAdmin(admin.ModelAdmin):
     ordering = ("order",)
 
 
-# ---------- BAR CATEGORY + ITEMS ----------
+# ======================================================
+#             BAR CATEGORY + ITEMS
+# ======================================================
+
 class BarItemInline(admin.TabularInline):
     model = BarItem
     extra = 1
@@ -83,7 +189,10 @@ class BarItemAdmin(admin.ModelAdmin):
     list_editable = ("order", "is_active")
 
 
-# ---------- GALLERY IMAGE (HOME PAGE GALLERY) ----------
+# ======================================================
+#                 GALLERY IMAGES
+# ======================================================
+
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
     list_display = ("title", "order", "is_active")
@@ -91,7 +200,7 @@ class GalleryImageAdmin(admin.ModelAdmin):
 
 
 # ======================================================
-#  EVENT + EVENT GALLERY INLINES (FINAL VERSION)
+#             EVENT + EVENT MEDIA INLINES
 # ======================================================
 
 class EventImageInline(admin.TabularInline):
@@ -114,6 +223,4 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ("is_active", "date")
     search_fields = ("title", "location", "description")
     ordering = ("-date",)
-    inlines = [EventImageInline, EventVideoInline]   # <-- THIS SHOWS GALLERY IN ADMIN
-
-
+    inlines = [EventImageInline, EventVideoInline]

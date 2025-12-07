@@ -8,6 +8,19 @@ body {
   overflow-x: hidden;
 }
 
+.liquor-name{
+  padding-left:20px;
+}
+/* Remove bullets from liquor lists */
+.liquor-list,
+.liquor-list li {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+
+
 /* ===== HERO SECTION ===== */
 .liquor-hero {
   position: relative;

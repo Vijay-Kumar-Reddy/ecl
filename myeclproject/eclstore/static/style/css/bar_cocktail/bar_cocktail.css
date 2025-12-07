@@ -6,6 +6,15 @@ body {
   margin: 0;
   padding: 0;
 }
+/* Remove bullets from bar and cocktail lists */
+#barItems,
+#barItems li,
+#cocktailItems,
+#cocktailItems li {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
 
 /* HERO SECTION */
 .barcocktail-hero {

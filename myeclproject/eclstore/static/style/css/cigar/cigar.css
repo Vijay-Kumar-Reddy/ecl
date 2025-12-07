@@ -23,6 +23,15 @@ body {
   text-align: center;
 }
 
+#cigarList,
+#cigarList li,
+#offerList,
+#offerList li {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
 .cigar-hero::after {
   content: "";
   position: absolute;
