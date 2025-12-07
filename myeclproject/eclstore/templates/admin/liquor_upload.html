@@ -1,0 +1,157 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+
+<style>
+
+.upload-wrapper {
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.upload-card {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.upload-card label {
+    color: #ddd;
+    font-size: 14px;
+}
+
+.upload-card input[type="file"] {
+    margin-top: 8px;
+    background: #2d2d2d;
+    color: #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+}
+
+.instruction-card {
+    background: #161616;
+    border: 1px solid #333;
+    padding: 25px;
+    margin-top: 30px;
+    border-radius: 8px;
+    color: #ddd;
+}
+
+.instruction-card h2,
+.instruction-card h3 {
+    color: #4ea3ff;
+}
+
+table.sample-table {
+    border-collapse: collapse;
+    margin-top: 12px;
+    width: 100%;
+    max-width: 500px;
+    background: #222;
+    color: #ddd;
+}
+
+table.sample-table td {
+    border: 1px solid #444;
+    padding: 10px;
+}
+
+table.sample-table tr:first-child {
+    background: #2f2f2f;
+    font-weight: bold;
+}
+
+.download-btn {
+    background:#1976d2;
+    color:white !important;
+    padding:8px 14px;
+    border-radius:5px;
+    text-decoration:none;
+    display:inline-block;
+    margin-top:12px;
+}
+.download-btn:hover {
+    background:#125a9c;
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="upload-wrapper">
+
+    <h1 style="color:white;">Upload Liquor Excel File</h1>
+
+    <div class="upload-card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label><b>Select Excel File (.xlsx or .xls)</b></label><br>
+            <input type="file" name="excel_file" accept=".xlsx,.xls" required>
+            <br><br>
+            <button type="submit" class="default">Upload</button>
+        </form>
+    </div>
+
+    {% if messages %}
+        <ul style="margin-top:15px; color:#fff;">
+            {% for message in messages %}
+                <li><strong>{{ message }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="instruction-card">
+
+        <h2>📌 Required Excel Format</h2>
+
+        <p>Your Excel sheet must contain the following columns:</p>
+
+        <table class="sample-table">
+            <tr>
+                <td>name</td>
+                <td>category</td>
+                <td>price</td>
+                <td>description</td>
+            </tr>
+            <tr>
+                <td>Johnnie Walker Black</td>
+                <td>Whiskey</td>
+                <td>45.00</td>
+                <td>Smooth blended Scotch</td>
+            </tr>
+        </table>
+
+        <p style="margin-top:10px;">
+            ✔ <b>name</b> — required  
+            ✔ <b>category</b> — must be one of:<br>
+            Whiskey, Rum, Vodka, Gin, Tequila, Wine, Other  
+            ✔ <b>price</b> — optional  
+            ✔ <b>description</b> — optional  
+            <br><br>
+            ✔ Existing liquors will update only when Excel provides values  
+            ✔ Empty fields will NOT overwrite existing data  
+        </p>
+
+        <h3>📄 Download Empty Excel Template</h3>
+        <a href="{% static 'liquor_template.xlsx' %}" 
+           download 
+           class="download-btn">
+            ⬇ Download Template
+        </a>
+
+    </div>
+
+    <br>
+    <a href="{% url 'admin:eclstore_liquor_changelist' %}" style="color:#4ea3ff;">
+        ← Back to Liquor List
+    </a>
+
+</div>
+
+{% endblock %}

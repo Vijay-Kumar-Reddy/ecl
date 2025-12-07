@@ -154,15 +154,115 @@ class DrinkAdmin(admin.ModelAdmin):
 
 
 # ======================================================
-#                     LIQUOR
+#                     LIQUOR (WITH EXCEL UPLOAD)
 # ======================================================
 
 @admin.register(Liquor)
 class LiquorAdmin(admin.ModelAdmin):
+
+    change_list_template = "admin/liquor_change_list.html"
+
     list_display = ("name", "category", "price", "order", "is_active")
     list_filter = ("category", "is_active")
     search_fields = ("name",)
     ordering = ("order",)
+
+    # Map category labels → model keys
+    CATEGORY_MAP = {
+        "Whiskey": "whiskey",
+        "Rum": "rum",
+        "Vodka": "vodka",
+        "Gin": "gin",
+        "Tequila": "tequila",
+        "Wine": "wine",
+        "Other": "other",
+    }
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path("upload-excel/", self.upload_excel, name="liquor_upload_excel"),
+        ]
+        return custom_urls + urls
+
+    def upload_excel(self, request):
+        if request.method == "POST":
+            excel_file = request.FILES.get("excel_file")
+
+            if not excel_file:
+                messages.error(request, "Please upload a valid Excel file.")
+                return redirect("admin:liquor_upload_excel")
+
+            try:
+                df = pd.read_excel(excel_file)
+                df.columns = df.columns.str.lower()
+
+                required_cols = {"name", "category", "price", "description"}
+                if not required_cols.issubset(set(df.columns)):
+                    messages.error(request, "Excel must contain: name, category, price, description.")
+                    return redirect("admin:liquor_upload_excel")
+
+                created_count = 0
+                updated_count = 0
+                skipped_count = 0
+
+                for _, row in df.iterrows():
+                    name = str(row.get("name", "")).strip()
+                    category_label = str(row.get("category", "")).strip()
+                    price = row.get("price", None)
+                    description = row.get("description", None)
+
+                    # Skip empty name rows
+                    if not name:
+                        continue
+
+                    # Validate category label
+                    if category_label not in self.CATEGORY_MAP:
+                        skipped_count += 1
+                        continue
+
+                    category_key = self.CATEGORY_MAP[category_label]
+
+                    liquor, created = Liquor.objects.get_or_create(name=name)
+
+                    if created:
+                        created_count += 1
+                        liquor.category = category_key
+                        if pd.notna(price): liquor.price = price
+                        if pd.notna(description): liquor.description = description
+                        liquor.save()
+
+                    else:
+                        updated = False
+
+                        # Smart update (Option 1)
+                        liquor.category = category_key
+
+                        if pd.notna(price):
+                            liquor.price = price
+                            updated = True
+
+                        if pd.notna(description) and str(description).strip():
+                            liquor.description = description
+                            updated = True
+
+                        if updated:
+                            liquor.save()
+                            updated_count += 1
+                        else:
+                            skipped_count += 1
+
+                messages.success(
+                    request,
+                    f"Liquor upload complete! Created: {created_count}, Updated: {updated_count}, Skipped: {skipped_count}"
+                )
+                return redirect("admin:eclstore_liquor_changelist")
+
+            except Exception as e:
+                messages.error(request, f"Error reading file: {e}")
+                return redirect("admin:liquor_upload_excel")
+
+        return render(request, "admin/liquor_upload.html")
 
 
 # ======================================================
