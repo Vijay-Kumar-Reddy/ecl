@@ -28,7 +28,7 @@ body {
 #offerList,
 #offerList li {
     list-style: none;
-    padding-left: 0;
+    /* padding-left: 0; */
     margin-left: 0;
 }
 
