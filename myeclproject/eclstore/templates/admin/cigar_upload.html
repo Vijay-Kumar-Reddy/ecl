@@ -1,27 +1,160 @@
 {% extends "admin/base_site.html" %}
 {% load static %}
 
+{% block extrastyle %}
+<style>
+
+    /* --- PAGE LAYOUT --- */
+    .upload-wrapper {
+        max-width: 900px;
+        margin: 20px auto;
+    }
+
+    /* --- UPLOAD CARD --- */
+    .upload-card {
+        background: #1e1e1e;
+        border: 1px solid #333;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .upload-card label {
+        color: #ddd;
+        font-size: 14px;
+    }
+
+    .upload-card input[type="file"] {
+        margin-top: 8px;
+        background: #2d2d2d;
+        color: #ccc;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #444;
+    }
+
+    .upload-card button {
+        margin-top: 12px;
+    }
+
+    /* --- INSTRUCTIONS CARD --- */
+    .instruction-card {
+        background: #161616;
+        border: 1px solid #333;
+        padding: 25px;
+        margin-top: 30px;
+        border-radius: 8px;
+        color: #ddd;
+    }
+
+    .instruction-card h2,
+    .instruction-card h3 {
+        color: #4ea3ff;
+        margin-top: 0;
+    }
+
+    /* --- SAMPLE TABLE --- */
+    table.sample-table {
+        border-collapse: collapse;
+        margin-top: 12px;
+        width: 100%;
+        max-width: 450px;
+        background: #222;
+        color: #ddd;
+    }
+
+    table.sample-table td {
+        border: 1px solid #444;
+        padding: 10px;
+    }
+
+    table.sample-table tr:first-child {
+        background: #2f2f2f;
+        font-weight: bold;
+    }
+
+    /* --- TEMPLATE BUTTON --- */
+    .download-btn {
+        background:#1976d2;
+        color:white !important;
+        padding:8px 14px;
+        border-radius:5px;
+        text-decoration:none;
+        display:inline-block;
+        margin-top:12px;
+    }
+    .download-btn:hover {
+        background:#125a9c;
+    }
+
+</style>
+{% endblock %}
+
+
 {% block content %}
-<h1>Upload Cigars Excel File</h1>
 
-<form method="POST" enctype="multipart/form-data" style="margin-top:20px;">
-    {% csrf_token %}
-    
-    <label><b>Select Excel File (.xlsx or .xls)</b></label><br>
-    <input type="file" name="excel_file" accept=".xlsx,.xls" required>
-    
-    <br><br>
-    <button type="submit" class="default">Upload</button>
-</form>
+<div class="upload-wrapper">
 
-{% if messages %}
-    <ul style="margin-top:20px;">
-        {% for message in messages %}
-            <li><strong>{{ message }}</strong></li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    <h1 style="color:white;">Upload Cigars Excel File</h1>
 
-<br>
-<a href="{% url 'admin:eclstore_cigar_changelist' %}">← Back to Cigars</a>
+    <!-- UPLOAD BOX -->
+    <div class="upload-card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label><b>Select Excel File (.xlsx or .xls)</b></label><br>
+
+            <input type="file" name="excel_file" accept=".xlsx,.xls" required>
+
+            <br><br>
+            <button type="submit" class="default">Upload</button>
+        </form>
+    </div>
+
+    {% if messages %}
+        <ul style="margin-top:15px; color:#fff;">
+            {% for message in messages %}
+                <li><strong>{{ message }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- INSTRUCTIONS -->
+    <div class="instruction-card">
+        <h2>📌 Required Excel Format</h2>
+
+        <p>Your Excel sheet <b>must include exactly these column headers:</b></p>
+
+        <table class="sample-table">
+            <tr>
+                <td>name</td>
+                <td>price (optional)</td>
+            </tr>
+            <tr>
+                <td>Example Cigar</td>
+                <td>12.50</td>
+            </tr>
+        </table>
+
+        <p style="margin-top:10px;">
+            ✔ <b>name</b> is required<br>
+            ✔ <b>price</b> is optional<br>
+            ✔ New cigars are created automatically<br>
+            ✔ Existing cigars update only if price is provided<br>
+            ✔ Empty price does NOT overwrite existing price<br>
+        </p>
+
+        <h3>📄 Download Empty Template</h3>
+        <a href="/static/sample_cigar_template.xlsx" download class="download-btn">
+            ⬇ Download Excel Template
+        </a>
+    </div>
+
+    <br>
+    <a href="{% url 'admin:eclstore_cigar_changelist' %}" style="color:#4ea3ff;">
+        ← Back to Cigar List
+    </a>
+
+</div>
+
 {% endblock %}
